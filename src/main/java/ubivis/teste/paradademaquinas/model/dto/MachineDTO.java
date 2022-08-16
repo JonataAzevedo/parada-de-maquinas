@@ -16,7 +16,7 @@ public class MachineDTO {
 
     private String machineTag;
 
-    private LocalDate startTime;
+    LocalDate startTime = LocalDate.now();
 
     private Date endTime;
 
