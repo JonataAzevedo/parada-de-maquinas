@@ -1,6 +1,8 @@
 package ubivis.teste.paradademaquinas.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ubivis.teste.paradademaquinas.model.dto.MachineDTO;
 import ubivis.teste.paradademaquinas.model.entities.Machine;
@@ -20,10 +22,11 @@ public class MachineService {
         return machineRepository.save(machine);
     }
 
-    public Optional<Machine> findById(Integer id){
-        if(machineRepository.findById(id).isEmpty()){
-            return Optional.empty();
+    public ResponseEntity<Machine> findById(Integer id){
+        Optional<Machine> machine = machineRepository.findById(id);
+        if(machine.isEmpty()){
+            return ResponseEntity.notFound().build();
         }
-        return machineRepository.findById(id);
+        return ResponseEntity.ok(machine.get());
     }
 }

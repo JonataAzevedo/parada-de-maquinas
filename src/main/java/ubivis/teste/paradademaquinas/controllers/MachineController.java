@@ -25,9 +25,7 @@ public class MachineController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Machine> findById(@PathVariable Integer id, MachineDTO machineDTO){
+    public ResponseEntity<Machine> findById(@PathVariable @RequestBody Integer id){
         return machineService.findById(id);
     }
-
-
 }
