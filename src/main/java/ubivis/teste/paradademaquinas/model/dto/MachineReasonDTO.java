@@ -6,21 +6,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MachineDTO {
+public class MachineReasonDTO {
 
     @NotNull
-    private String machineTag;
+    Integer id;
 
     @NotNull
-    private LocalDateTime startTime;
-
-    private LocalDateTime endTime;
-
-    private String reason;
+    String reason;
 }

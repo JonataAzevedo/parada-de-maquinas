@@ -27,16 +27,16 @@ public class Machine implements Serializable {
     @Column
     private Integer id;
 
-    @NotNull
     @Column(name = "machine_tag", nullable = false, length = 24)
     private String machineTag;
 
-    @Column(name = "start_time", nullable = false)
+    @NotNull
+    @Column(name = "start_time")
     private LocalDateTime startTime;
 
     @Column(name = "end_time")
     private LocalDateTime endTime;
 
-    @Column(length = 128)
+    @Column(name = "reason", length = 128)
     private String reason;
 }
