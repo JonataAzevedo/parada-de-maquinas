@@ -3,7 +3,8 @@ package ubivis.teste.paradademaquinas.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import ubivis.teste.paradademaquinas.model.dto.MachineDTO;
+import ubivis.teste.paradademaquinas.model.dto.MachineCreateDTO;
+import ubivis.teste.paradademaquinas.model.dto.MachineEndStopDTO;
 import ubivis.teste.paradademaquinas.model.dto.MachineReasonDTO;
 import ubivis.teste.paradademaquinas.model.entities.Machine;
 import ubivis.teste.paradademaquinas.repository.MachineRepository;
@@ -17,10 +18,10 @@ public class MachineService {
     @Autowired
     private MachineRepository machineRepository;
 
-    public Machine create(MachineDTO machineDTO){
+    public Machine create(MachineCreateDTO machineCreateDTO){
         Machine machine = new Machine();
-        machine.setMachineTag(machineDTO.getMachineTag());
-        machine.setStartTime(machineDTO.getStartTime());
+        machine.setMachineTag(machineCreateDTO.getMachineTag());
+        machine.setStartTime(machineCreateDTO.getStartTime());
         return machineRepository.save(machine);
     }
 
@@ -36,13 +37,13 @@ public class MachineService {
         return machineRepository.findAll();
     }
 
-    public Machine endStop(Integer id, MachineDTO machineDTO){
+    public Machine endStop(Integer id, MachineEndStopDTO machineEndStopDTO){
         Optional<Machine> machine = machineRepository.findById(id);
         if(machine.isEmpty()){
             return null;
         }
         Machine newEndStop = machine.get();
-        newEndStop.setEndTime(machineDTO.getEndTime());
+        newEndStop.setEndTime(machineEndStopDTO.getEndTime());
         return machineRepository.save(newEndStop);
     }
 

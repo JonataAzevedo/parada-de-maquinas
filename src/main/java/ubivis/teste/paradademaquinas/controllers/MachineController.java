@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ubivis.teste.paradademaquinas.model.dto.MachineCreateDTO;
 import ubivis.teste.paradademaquinas.model.dto.MachineDTO;
+import ubivis.teste.paradademaquinas.model.dto.MachineEndStopDTO;
 import ubivis.teste.paradademaquinas.model.dto.MachineReasonDTO;
 import ubivis.teste.paradademaquinas.model.entities.Machine;
 import ubivis.teste.paradademaquinas.service.MachineService;
@@ -19,8 +21,8 @@ public class MachineController {
     private MachineService machineService;
 
     @PostMapping
-    public ResponseEntity<Machine> create(@RequestBody MachineDTO machineDTO){
-        Machine machine = machineService.create(machineDTO);
+    public ResponseEntity<Machine> create(@RequestBody MachineCreateDTO machineCreateDTO){
+        Machine machine = machineService.create(machineCreateDTO);
         return new ResponseEntity<>(machine, HttpStatus.CREATED);
     }
 
@@ -35,8 +37,8 @@ public class MachineController {
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<Machine> endStop(@PathVariable Integer id, @RequestBody MachineDTO machineDTO){
-        return new ResponseEntity<>(machineService.endStop(id, machineDTO), HttpStatus.OK);
+    public ResponseEntity<Machine> endStop(@PathVariable Integer id, @RequestBody MachineEndStopDTO machineEndStopDTO){
+        return new ResponseEntity<>(machineService.endStop(id, machineEndStopDTO), HttpStatus.OK);
     }
 
     @PutMapping(path = "/reason/{id}")
