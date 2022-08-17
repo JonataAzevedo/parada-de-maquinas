@@ -6,10 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ubivis.teste.paradademaquinas.model.dto.MachineDTO;
 import ubivis.teste.paradademaquinas.model.entities.Machine;
-import ubivis.teste.paradademaquinas.repository.MachineRepository;
 import ubivis.teste.paradademaquinas.service.MachineService;
 
-import java.util.Optional;
+import java.util.List;
 
 @RestController
 @RequestMapping("/machine-hal")
@@ -24,8 +23,18 @@ public class MachineController {
         return new ResponseEntity<>(machine, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(path = "/{id}")
     public ResponseEntity<Machine> findById(@PathVariable @RequestBody Integer id){
         return machineService.findById(id);
+    }
+
+    @GetMapping("/list")
+    public List<Machine> findAll(){
+        return machineService.machineList();
+    }
+
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<Machine> endstop(@PathVariable Integer id, @RequestBody MachineDTO machineDTO){
+        return new ResponseEntity<>(machineService.endstop(id, machineDTO), HttpStatus.OK);
     }
 }
