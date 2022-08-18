@@ -27,6 +27,7 @@ public class MachineService {
 
     public ResponseEntity<Machine> findById(Integer id){
         Optional<Machine> machine = machineRepository.findById(id);
+
         if(machine.isEmpty()){
             return ResponseEntity.notFound().build();
         }

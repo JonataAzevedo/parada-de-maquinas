@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ubivis.teste.paradademaquinas.model.dto.MachineCreateDTO;
-import ubivis.teste.paradademaquinas.model.dto.MachineDTO;
 import ubivis.teste.paradademaquinas.model.dto.MachineEndStopDTO;
 import ubivis.teste.paradademaquinas.model.dto.MachineReasonDTO;
 import ubivis.teste.paradademaquinas.model.entities.Machine;
