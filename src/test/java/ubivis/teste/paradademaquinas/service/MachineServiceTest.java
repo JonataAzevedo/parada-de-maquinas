@@ -17,7 +17,7 @@ import ubivis.teste.paradademaquinas.repository.MachineRepository;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-@DisplayName("Machine service teste")
+@DisplayName("Machine service test")
 public class MachineServiceTest extends ParadaDeMaquinasApplicationTests {
 
     @Autowired
@@ -35,7 +35,7 @@ public class MachineServiceTest extends ParadaDeMaquinasApplicationTests {
                 .build();
         Machine machineToCreate = Machine.builder()
                 .machineTag("TAG")
-                .startTime(LocalDateTime.MIN)
+                .startTime(LocalDateTime.MIN).reason("reason")
                 .build();
 
         Mockito.when(machineRepository.save(machineToCreate)).thenReturn(machineMock);
@@ -71,6 +71,23 @@ public class MachineServiceTest extends ParadaDeMaquinasApplicationTests {
         } catch (ResourceNotFoundException exception) {
             Assertions.assertThat(exception.getMessage()).isEqualTo("Machine not found for ID: 15");
         }
+    }
+
+    @Test
+    public void test_deleteById(){
+        Machine machine = machineService.findById(13);
+
+        Assertions.assertThat(machine).isNotNull();
+        Assertions.assertThat(machine.getId()).isEqualTo(13);
+    }
+
+    @Test
+    public void test_reasonStop() {
+        Machine machine = machineService.findById(13);
+
+        Assertions.assertThat(machine.getReason()).isEqualTo("reason");
+        Assertions.assertThat(machine).isNotNull();
+        Assertions.assertThat(machine.getId()).isNotNull();
     }
 }
 
