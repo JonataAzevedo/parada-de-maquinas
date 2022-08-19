@@ -1,19 +1,21 @@
 package ubivis.teste.paradademaquinas.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ubivis.teste.paradademaquinas.model.dto.MachineCreateDTO;
-import ubivis.teste.paradademaquinas.model.dto.MachineEndStopDTO;
+import ubivis.teste.paradademaquinas.model.dto.StopMachineHoltDTO;
 import ubivis.teste.paradademaquinas.model.dto.MachineReasonDTO;
 import ubivis.teste.paradademaquinas.model.entities.Machine;
 import ubivis.teste.paradademaquinas.service.MachineService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/machine-hal")
+@RequestMapping("/machine-halt")
 public class MachineController {
 
     @Autowired
@@ -27,17 +29,19 @@ public class MachineController {
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<Machine> findById(@PathVariable @RequestBody Integer id){
-        return machineService.findById(id);
+        return new ResponseEntity<>(machineService.findById(id),HttpStatus.OK);
     }
 
-    @GetMapping("/list")
-    public List<Machine> findAll(){
-        return machineService.machineListAll();
+    @GetMapping(path = "/list")
+    public List<Machine> findAll(@RequestParam String machineTag,
+                                 @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime  intervalStart,
+                                 @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime intervalEnd){
+        return machineService.listAll(machineTag, intervalStart, intervalEnd);
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<Machine> endStop(@PathVariable Integer id, @RequestBody MachineEndStopDTO machineEndStopDTO){
-        return new ResponseEntity<>(machineService.endStop(id, machineEndStopDTO), HttpStatus.OK);
+    public ResponseEntity<Machine> stopMachineHalt(@PathVariable Integer id, @RequestBody StopMachineHoltDTO stopMachineHoltDTO){
+        return new ResponseEntity<>(machineService.stopMachineHalt(id, stopMachineHoltDTO), HttpStatus.OK);
     }
 
     @PutMapping(path = "/reason/{id}")
@@ -45,13 +49,15 @@ public class MachineController {
         return new ResponseEntity<>(machineService.reasonStop(id, machineReasonDTO), HttpStatus.OK);
     }
 
-    @DeleteMapping("/all")
-    public void deleteAllStop(){
+    @DeleteMapping(path = "/all")
+    public ResponseEntity<?> deleteAllStop(){
          machineService.deleteAllStop();
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping(path = "/{id}")
-    public void deleteById(@PathVariable Integer id){
+    public ResponseEntity<?> deleteById(@PathVariable Integer id){
         machineService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

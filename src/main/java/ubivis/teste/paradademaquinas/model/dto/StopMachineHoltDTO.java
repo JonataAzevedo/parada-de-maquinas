@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MachineEndStopDTO {
+public class StopMachineHoltDTO {
 
     @NotNull
     private LocalDateTime endTime;
