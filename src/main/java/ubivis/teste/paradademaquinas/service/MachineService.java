@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import ubivis.teste.paradademaquinas.exception.ResourceConflictException;
 import ubivis.teste.paradademaquinas.exception.ResourceNotFoundException;
 import ubivis.teste.paradademaquinas.model.dto.MachineCreateDTO;
 import ubivis.teste.paradademaquinas.model.dto.StopMachineHoltDTO;
@@ -26,9 +27,10 @@ public class MachineService {
         machine.setMachineTag(machineCreateDTO.getMachineTag());
         machine.setStartTime(machineCreateDTO.getStartTime());
 
-        if(machineRepository.findByMachineTag(machine.getMachineTag())){
-            throw new ResourceNotFoundException("An open machine halt already exists for the machine tag. Close or delete it to redo the request");
+        if(machineRepository.existsByMachineTag(machine.getMachineTag())){
+            throw new ResourceConflictException("An open machine halt already exists for the machine tag. Close or delete it to redo the request");
         }
+
         return machineRepository.save(machine);
     }
 

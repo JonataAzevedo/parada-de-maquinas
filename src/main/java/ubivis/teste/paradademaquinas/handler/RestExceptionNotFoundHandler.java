@@ -10,7 +10,7 @@ import ubivis.teste.paradademaquinas.exception.ResourceNotFoundException;
 import java.util.Date;
 
 @ControllerAdvice
-public class RestExceptionHandler {
+public class RestExceptionNotFoundHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<?> handleResourceNotFoundException (ResourceNotFoundException rfnException){
@@ -19,8 +19,7 @@ public class RestExceptionHandler {
                 .status(HttpStatus.NOT_FOUND.value())
                 .title("Resource not found")
                 .detail(rfnException.getMessage())
-                .developerMessage(rfnException.getClass().getName()).build();
+                .message(rfnException.getClass().getName()).build();
         return new ResponseEntity<>(rnfDetails, HttpStatus.NOT_FOUND);
-
     }
 }

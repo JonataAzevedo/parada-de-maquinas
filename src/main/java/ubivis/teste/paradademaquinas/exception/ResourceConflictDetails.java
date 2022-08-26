@@ -1,12 +1,15 @@
 package ubivis.teste.paradademaquinas.exception;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
 
 @Data
 @Builder
 @AllArgsConstructor
 @Getter
-public class ResourceNotFoundDetails {
+public class ResourceConflictDetails {
 
     private String title;
 
@@ -18,7 +21,7 @@ public class ResourceNotFoundDetails {
 
     private String message;
 
-    private ResourceNotFoundDetails(){
+    private ResourceConflictDetails(){
 
     }
 }

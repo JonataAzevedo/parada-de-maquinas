@@ -17,6 +17,5 @@ public interface MachineRepository extends JpaRepository<Machine, Integer> {
     @Query(value = "SELECT * FROM machine WHERE machine_tag LIKE :machineTag ORDER BY id DESC LIMIT 1", nativeQuery = true)
     Optional<Machine> findMastRecentByMachineTag(String machineTag);
 
-
-    Optional<Machine> findByMachineTag(String machineTag);
+    boolean existsByMachineTag(String machineTag);
 }
