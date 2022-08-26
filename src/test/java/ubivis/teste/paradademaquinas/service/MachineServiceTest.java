@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ubivis.teste.paradademaquinas.ParadaDeMaquinasApplicationTests;
+import ubivis.teste.paradademaquinas.exception.ResourceConflictException;
 import ubivis.teste.paradademaquinas.exception.ResourceNotFoundException;
 import ubivis.teste.paradademaquinas.model.dto.MachineCreateDTO;
 import ubivis.teste.paradademaquinas.model.entities.Machine;
@@ -32,10 +33,12 @@ public class MachineServiceTest extends ParadaDeMaquinasApplicationTests {
                 .machineTag("TAG")
                 .startTime(LocalDateTime.MIN)
                 .id(13)
+                .reason("reason")
                 .build();
         Machine machineToCreate = Machine.builder()
                 .machineTag("TAG")
-                .startTime(LocalDateTime.MIN).reason("reason")
+                .startTime(LocalDateTime.MIN)
+                .reason("reason")
                 .build();
 
         Mockito.when(machineRepository.save(machineToCreate)).thenReturn(machineMock);
@@ -70,6 +73,16 @@ public class MachineServiceTest extends ParadaDeMaquinasApplicationTests {
             machineService.findById(15);
         } catch (ResourceNotFoundException exception) {
             Assertions.assertThat(exception.getMessage()).isEqualTo("Machine not found for ID: 15");
+        }
+    }
+
+    @Test
+    public void test_create_Conflict() {
+        try {
+            MachineCreateDTO machineCreateDTO = new MachineCreateDTO("TAG", LocalDateTime.MIN);
+        } catch (ResourceConflictException exception) {
+            Assertions.assertThat(exception.getMessage()).
+                    isEqualTo("An open machine halt already exists for the machine tag. Close or delete it to redo the request");
         }
     }
 
