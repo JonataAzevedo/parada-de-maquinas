@@ -1,6 +1,8 @@
 package ubivis.teste.paradademaquinas.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import ubivis.teste.paradademaquinas.exception.ResourceNotFoundException;
 import ubivis.teste.paradademaquinas.model.dto.MachineCreateDTO;
@@ -23,6 +25,10 @@ public class MachineService {
         Machine machine = new Machine();
         machine.setMachineTag(machineCreateDTO.getMachineTag());
         machine.setStartTime(machineCreateDTO.getStartTime());
+
+        if(machineRepository.findByMachineTag(machine.getMachineTag())){
+            throw new ResourceNotFoundException("An open machine halt already exists for the machine tag. Close or delete it to redo the request");
+        }
         return machineRepository.save(machine);
     }
 
@@ -37,7 +43,6 @@ public class MachineService {
     }
 
     public List<Machine> listAll(String machineTag, LocalDateTime intervalStart, LocalDateTime intervalEnd) {
-
         return machineRepository.findByMachineTagAndStartTimeAfterAndEndTimeBefore(machineTag, intervalStart, intervalEnd);
     }
 
@@ -55,9 +60,11 @@ public class MachineService {
 
     public Machine reasonStop(Integer id, MachineReasonDTO machineReasonDTO) {
         Optional<Machine> machine = machineRepository.findById(id);
+
         if (machine.isEmpty()) {
             throw new ResourceNotFoundException("Machine not found for ID: " + id);
         }
+
         Machine reasonStop = machine.get();
         reasonStop.setReason(machineReasonDTO.getReason());
         return machineRepository.save(reasonStop);
@@ -69,5 +76,15 @@ public class MachineService {
 
     public void deleteById(Integer id) {
         machineRepository.deleteById(id);
+    }
+
+    public Machine machineRecentByTag(String machineTag) {
+        Optional<Machine> machine = machineRepository.findMastRecentByMachineTag(machineTag);
+
+        if (machine.isEmpty()){
+            throw new ResourceNotFoundException("Machine not found for MACHINE TAG: " + machineTag);
+        }
+
+        return machine.get();
     }
 }

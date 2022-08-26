@@ -60,4 +60,9 @@ public class MachineController {
         machineService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @GetMapping(path = "/open/{machineTag}")
+    public ResponseEntity<?> recentMachine(@PathVariable String machineTag){
+        return new ResponseEntity<>(machineService.machineRecentByTag(machineTag), HttpStatus.OK);
+    }
 }
